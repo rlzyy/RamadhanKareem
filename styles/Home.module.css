@@ -158,14 +158,53 @@
   margin: 1rem 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.countdownBox::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 50%);
+  animation: pulseGlow 8s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .daysLeft {
-  font-size: 3.5rem;
+  font-size: 4rem;
   font-weight: bold;
   color: #ffd700;
   margin-bottom: 0.5rem;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  position: relative;
+  display: inline-block;
+}
+
+.daysLeft::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.7), transparent);
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: rotate(0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+    opacity: 0.3;
+  }
 }
 
 .blessingText {

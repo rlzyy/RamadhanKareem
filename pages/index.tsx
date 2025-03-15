@@ -1,7 +1,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { format } from 'date-fns';
+import { format, differenceInDays } from 'date-fns';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDown, Clock, Calendar, Moon, Sun, Play, Pause, Music, Search, Star, MapPin } from 'lucide-react';
@@ -13,7 +13,7 @@ const Home = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [prayerTimes, setPrayerTimes] = useState(null);
   const [city, setCity] = useState('Jakarta');
-  const [daysLeft, setDaysLeft] = useState(1);
+  const [daysLeft, setDaysLeft] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: '/ramadan.mp3' });
@@ -21,8 +21,55 @@ const Home = () => {
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [lailatulQadarDays, setLailatulQadarDays] = useState([21, 23, 25, 27, 29]);
+  const [countdownAnimation, setCountdownAnimation] = useState(false);
   const audioRef = useRef(null);
   const searchRef = useRef(null);
+  
+  // Ramadan 2025 starts on March 1, 2025
+  const ramadanStartDate = new Date(2025, 2, 1); // Month is 0-indexed
+
+  useEffect(() => {
+    // Calculate days left until Ramadan
+    const calculateDaysLeft = () => {
+      const today = new Date();
+      
+      // If we're before Ramadan start
+      if (today < ramadanStartDate) {
+        const daysToRamadan = differenceInDays(ramadanStartDate, today);
+        setDaysLeft(daysToRamadan);
+        return;
+      }
+      
+      // If we're in Ramadan (which lasts 29 or 30 days)
+      const ramadanEndDate = new Date(ramadanStartDate);
+      ramadanEndDate.setDate(ramadanStartDate.getDate() + 29); // Assuming 30 days
+      
+      if (today <= ramadanEndDate) {
+        const daysLeftInRamadan = differenceInDays(ramadanEndDate, today) + 1; // +1 to include today
+        setDaysLeft(daysLeftInRamadan);
+        return;
+      }
+      
+      // If Ramadan is over
+      setDaysLeft(0);
+    };
+    
+    calculateDaysLeft();
+    
+    // Refresh countdown every day
+    const interval = setInterval(calculateDaysLeft, 86400000); // 24 hours
+    
+    // Trigger animation every 10 seconds
+    const animationInterval = setInterval(() => {
+      setCountdownAnimation(true);
+      setTimeout(() => setCountdownAnimation(false), 1000);
+    }, 10000);
+    
+    return () => {
+      clearInterval(interval);
+      clearInterval(animationInterval);
+    };
+  }, []);
 
   useEffect(() => {
     // Reduce loading time for better performance
@@ -215,12 +262,46 @@ const Home = () => {
             <h2 className={styles.sectionTitle}>
               <Moon className={styles.sectionIcon} /> Hitung Mundur
             </h2>
-            <div className={styles.countdownBox}>
-              <div className={styles.daysLeft}>{daysLeft}</div>
-              <p>Hari Tersisa</p>
-            </div>
+            <motion.div 
+              className={styles.countdownBox}
+              animate={countdownAnimation ? {
+                scale: [1, 1.05, 1],
+                boxShadow: [
+                  '0 4px 10px rgba(0, 0, 0, 0.1)', 
+                  '0 8px 20px rgba(255, 215, 0, 0.2)', 
+                  '0 4px 10px rgba(0, 0, 0, 0.1)'
+                ]
+              } : {}}
+              transition={{ duration: 1 }}
+            >
+              <motion.div 
+                className={styles.daysLeft}
+                animate={countdownAnimation ? { 
+                  color: ['#ffd700', '#ffffff', '#ffd700'],
+                  textShadow: [
+                    '0 2px 5px rgba(0, 0, 0, 0.2)',
+                    '0 0 15px rgba(255, 215, 0, 0.8)',
+                    '0 2px 5px rgba(0, 0, 0, 0.2)'
+                  ]
+                } : {}}
+                transition={{ duration: 1 }}
+              >
+                {daysLeft}
+              </motion.div>
+              <motion.p
+                animate={countdownAnimation ? { 
+                  opacity: [1, 0.7, 1],
+                  y: [0, -2, 0]
+                } : {}}
+                transition={{ duration: 1 }}
+              >
+                {daysLeft > 0 ? 'Hari Menuju Ramadhan 2025' : 'Ramadhan Tiba!'}
+              </motion.p>
+            </motion.div>
             <p className={styles.blessingText}>
-              Ramadhan Mubarak! Semoga Allah memberkati puasa dan doa kalian.
+              {daysLeft > 0 
+                ? `Persiapkan diri untuk menyambut bulan suci Ramadan ${format(ramadanStartDate, 'dd MMMM yyyy')}` 
+                : 'Ramadhan Mubarak! Semoga Allah memberkati puasa dan doa kalian.'}
             </p>
           </section>
 
