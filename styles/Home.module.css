@@ -40,6 +40,19 @@
   transform: rotate(-30deg);
 }
 
+.backgroundPattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(rgba(255, 215, 0, 0.1) 2px, transparent 2px);
+  background-size: 40px 40px;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.2;
+}
+
 /* Loading Screen */
 .loadingScreen {
   position: fixed;
@@ -795,10 +808,68 @@
   }
 }
 
+/* Fasting Calendar Section */
+.fastingCalendarSection {
+  background: rgba(10, 77, 46, 0.8);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(5px);
+}
+
+.fastingCalendarGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.fastingCalendarDay {
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fastingCompleted {
+  background: rgba(0, 255, 0, 0.1);
+  border-color: rgba(0, 255, 0, 0.3);
+}
+
+.dayNumber {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.fastingCompleted .dayNumber {
+  color: #4cff4c;
+}
+
+.completedIcon {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+  color: #4cff4c;
+}
+
 /* Media queries for responsiveness */
 @media (max-width: 768px) {
   .lailatulQadarDate {
     width: calc(33.33% - 0.5rem);
+  }
+  
+  .fastingCalendarGrid {
+    grid-template-columns: repeat(5, 1fr);
   }
 }
 
@@ -810,5 +881,9 @@
   .floatingMusicPlayer {
     width: calc(100% - 3rem);
     right: 1.5rem;
+  }
+  
+  .fastingCalendarGrid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
