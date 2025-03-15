@@ -3,19 +3,27 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #0a4d2e 0%, #1a6741 100%);
   color: #fff;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .main {
   max-width: 800px;
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.header {
+  margin-bottom: 1rem;
 }
 
 .arabicTitle {
   font-size: 3rem;
   margin-bottom: 0.5rem;
   color: #ffd700;
+  font-family: 'Amiri', serif;
 }
 
 .title {
@@ -26,44 +34,75 @@
 .subtitle {
   font-size: 1.2rem;
   color: #eee;
-  margin-bottom: 2rem;
 }
 
 .countdownCard {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   padding: 2rem;
-  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .daysLeft {
   font-size: 4rem;
   font-weight: bold;
   color: #ffd700;
+  margin: 1rem 0;
+}
+
+.icon {
+  color: #ffd700;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 1rem;
 }
 
 .prayerTimesCard {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   padding: 2rem;
-  margin-bottom: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.citySelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
 }
 
 .selectTrigger {
   background: rgba(255, 255, 255, 0.2);
   border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
   color: white;
   cursor: pointer;
-  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
 }
 
 .selectContent {
   background: #1a6741;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   padding: 0.5rem;
   color: white;
+  overflow: hidden;
+}
+
+.selectItem {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border-radius: 0.5rem;
+}
+
+.selectItem:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .prayerList {
@@ -73,36 +112,103 @@
 
 .prayerTime {
   display: flex;
-  justify-content: space-between;
-  padding: 0.5rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
+  transition: transform 0.2s;
+}
+
+.prayerTime:hover {
+  transform: translateX(5px);
+}
+
+.timeIcon {
+  color: #ffd700;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .duaSection {
   background: rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  border-radius: 1.5rem;
   padding: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-.duaTrigger {
+.accordionItem {
+  margin-top: 1rem;
+}
+
+.accordionTrigger {
   width: 100%;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
   border: none;
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   color: white;
   cursor: pointer;
-  margin-bottom: 1rem;
-  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color 0.2s;
 }
 
-.duaContent {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1rem;
+.accordionTrigger:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.accordionChevron {
+  transition: transform 0.2s;
+}
+
+.accordionTrigger[data-state='open'] .accordionChevron {
+  transform: rotate(180deg);
+}
+
+.accordionContent {
+  overflow: hidden;
+}
+
+.accordionContent[data-state='open'] {
+  animation: slideDown 0.2s ease-out;
+}
+
+.accordionContent[data-state='closed'] {
+  animation: slideUp 0.2s ease-out;
+}
+
+.arabicText {
+  padding: 1.5rem;
+  font-size: 1.5rem;
   text-align: right;
   direction: rtl;
-  font-size: 1.2rem;
+  font-family: 'Amiri', serif;
+  color: #ffd700;
+}
+
+@keyframes slideDown {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--radix-accordion-content-height);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    height: var(--radix-accordion-content-height);
+  }
+  to {
+    height: 0;
+  }
+}
+
+.loading {
+  padding: 2rem;
+  text-align: center;
+  color: #ffd700;
 }
