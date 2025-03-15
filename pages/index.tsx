@@ -4,7 +4,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Accordion from '@radix-ui/react-accordion';
-import { ChevronDown, Clock, Calendar, Moon, Sun, Play, Pause, Music, Search } from 'lucide-react';
+import { ChevronDown, Clock, Calendar, Moon, Sun, Play, Pause, Music, Search, Star, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../styles/Home.module.css';
 
@@ -16,9 +16,12 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: '/ramadan.mp3' });
-  const [cityInput, setCityInput] = useState('Jakarta');
+  const [cityInput, setCityInput] = useState('');
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [lailatulQadarDays, setLailatulQadarDays] = useState([21, 23, 25, 27, 29]);
   const audioRef = useRef(null);
+  const searchRef = useRef(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -28,7 +31,13 @@ const Home = () => {
 
   const songs = [
     { title: 'Ramadan Nasheed', url: '/ramadan.mp3' },
-    { title: 'Islamic Prayer', url: '/prayer.mp3' }
+    { title: 'Islamic Prayer', url: '/prayer.mp3' },
+    { title: 'Ya Maulana', url: '/yamaulana.mp3' }
+  ];
+
+  const cities = [
+    'Jakarta', 'Bandung', 'Surabaya', 'Yogyakarta', 'Medan', 'Makassar', 
+    'Semarang', 'Palembang', 'Padang', 'Balikpapan', 'Pontianak'
   ];
 
   const togglePlay = () => {
@@ -53,7 +62,16 @@ const Home = () => {
 
   const handleCitySubmit = (e) => {
     e.preventDefault();
-    setCity(cityInput);
+    if (cityInput.trim()) {
+      setCity(cityInput);
+      setSearchOpen(false);
+    }
+  };
+
+  const handleCitySelect = (selectedCity) => {
+    setCity(selectedCity);
+    setCityInput(selectedCity);
+    setSearchOpen(false);
   };
 
   useEffect(() => {
@@ -83,6 +101,31 @@ const Home = () => {
     return format(today, 'dd MMMM yyyy');
   };
 
+  const calculateLailatulQadarDate = (day) => {
+    const ramadanStart = new Date(2025, 2, 15); // March 15, 2025
+    const date = new Date(ramadanStart);
+    date.setDate(ramadanStart.getDate() + day - 1);
+    return format(date, 'dd MMMM yyyy');
+  };
+
+  // Generate random stars for the background
+  const generateStars = (count) => {
+    const stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        size: Math.random() * 2 + 1,
+        opacity: Math.random() * 0.5 + 0.5,
+        blinkDelay: Math.random() * 5
+      });
+    }
+    return stars;
+  };
+
+  const bgStars = generateStars(100);
+
   return (
     <div className={styles.container}>
       <AnimatePresence>
@@ -103,15 +146,65 @@ const Home = () => {
               }}
             >
               <span className={styles.loader}></span>
+              <div className={styles.loadingText}>Loading Ramadhan Kareem...</div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
+      {/* Animated Background Stars */}
+      <div className={styles.starsContainer}>
+        {bgStars.map((star) => (
+          <motion.div
+            key={star.id}
+            className={styles.star}
+            style={{
+              left: `${star.x}%`,
+              top: `${star.y}%`,
+              width: `${star.size}px`,
+              height: `${star.size}px`,
+            }}
+            animate={{
+              opacity: [star.opacity, star.opacity * 0.3, star.opacity],
+              scale: [1, 1.2, 1]
+            }}
+            transition={{
+              duration: 2,
+              delay: star.blinkDelay,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+        ))}
+      </div>
+
+      <div className={styles.crescentMoon} />
+
       <header className={styles.header}>
-        <h1 className={styles.title}>Ramadhan Kareem</h1>
-        <h2 className={styles.subtitle}>Selamat Menunaikan Ibadah Puasa</h2>
-        <h3 className={styles.subtitle}>1446 H | {formatDate()}</h3>
+        <motion.h1 
+          className={styles.title}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+        >
+          Ramadhan Kareem
+        </motion.h1>
+        <motion.h2 
+          className={styles.subtitle}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          Selamat Menunaikan Ibadah Puasa
+        </motion.h2>
+        <motion.h3 
+          className={styles.subtitle}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          1446 H | {formatDate()}
+        </motion.h3>
       </header>
 
       <main className={styles.main}>
@@ -144,62 +237,167 @@ const Home = () => {
           </h2>
           
           <div className={styles.citySelector}>
-            <p>Kota</p>
-            <div className={styles.cityName}>{city}</div>
-            <form onSubmit={handleCitySubmit} className={styles.searchForm}>
-              <div className={styles.cityOptions}>
-                <button 
-                  type="button" 
-                  className={city === 'Jakarta' ? styles.activeCityOption : styles.cityOption}
-                  onClick={() => {setCityInput('Jakarta'); setCity('Jakarta');}}
+            <div className={styles.cityHeader}>
+              <MapPin size={16} className={styles.cityHeaderIcon} />
+              <div className={styles.cityName}>{city}</div>
+              <button 
+                onClick={() => setSearchOpen(true)} 
+                className={styles.searchButton}
+              >
+                <Search size={16} />
+              </button>
+            </div>
+
+            <AnimatePresence>
+              {searchOpen && (
+                <motion.div 
+                  className={styles.searchOverlay}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                 >
-                  Jakarta
-                </button>
-                <button 
-                  type="button" 
-                  className={city === 'Bandung' ? styles.activeCityOption : styles.cityOption}
-                  onClick={() => {setCityInput('Bandung'); setCity('Bandung');}}
-                >
-                  Bandung
-                </button>
-                <button 
-                  type="button" 
-                  className={city === 'Surabaya' ? styles.activeCityOption : styles.cityOption}
-                  onClick={() => {setCityInput('Surabaya'); setCity('Surabaya');}}
-                >
-                  Surabaya
-                </button>
-              </div>
-            </form>
+                  <motion.div 
+                    className={styles.searchContainer}
+                    initial={{ y: 20, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: 20, opacity: 0 }}
+                    transition={{ type: "spring", damping: 25 }}
+                  >
+                    <div className={styles.searchHeader}>
+                      <h3>Pilih Kota</h3>
+                      <button 
+                        onClick={() => setSearchOpen(false)}
+                        className={styles.closeButton}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                    
+                    <form onSubmit={handleCitySubmit} className={styles.searchForm}>
+                      <div className={styles.searchInputContainer}>
+                        <Search size={16} className={styles.searchIcon} />
+                        <input
+                          type="text"
+                          value={cityInput}
+                          onChange={(e) => setCityInput(e.target.value)}
+                          placeholder="Cari kota..."
+                          className={styles.searchInput}
+                          ref={searchRef}
+                        />
+                      </div>
+                    </form>
+                    
+                    <div className={styles.citiesList}>
+                      {cities
+                        .filter(c => c.toLowerCase().includes(cityInput.toLowerCase()) || cityInput === '')
+                        .map((cityName, index) => (
+                          <button
+                            key={index}
+                            className={styles.cityListItem}
+                            onClick={() => handleCitySelect(cityName)}
+                          >
+                            {cityName}
+                          </button>
+                        ))}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div className={styles.quickCityOptions}>
+              <button 
+                className={city === 'Jakarta' ? styles.activeCityOption : styles.cityOption}
+                onClick={() => handleCitySelect('Jakarta')}
+              >
+                Jakarta
+              </button>
+              <button 
+                className={city === 'Bandung' ? styles.activeCityOption : styles.cityOption}
+                onClick={() => handleCitySelect('Bandung')}
+              >
+                Bandung
+              </button>
+              <button 
+                className={city === 'Surabaya' ? styles.activeCityOption : styles.cityOption}
+                onClick={() => handleCitySelect('Surabaya')}
+              >
+                Surabaya
+              </button>
+            </div>
           </div>
 
           {loading ? (
-            <div className={styles.loading}>Loading...</div>
+            <div className={styles.loadingIndicator}>
+              <div className={styles.loadingSpinner}></div>
+              <span>Memuat jadwal...</span>
+            </div>
           ) : (
             <div className={styles.prayerList}>
               {prayerTimes && Object.entries({
                 Imsak: prayerTimes.Imsak,
                 Subuh: prayerTimes.Fajr,
-                Terbit: '05:57',
+                Terbit: prayerTimes.Sunrise,
                 Dzuhur: prayerTimes.Dhuhr,
                 Ashar: prayerTimes.Asr,
                 Maghrib: prayerTimes.Maghrib,
                 Isya: prayerTimes.Isha
               }).map(([name, time]) => (
-                <div key={name} className={styles.prayerTime}>
+                <motion.div 
+                  key={name} 
+                  className={styles.prayerTime}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.1 * Math.random() }}
+                >
                   <span className={styles.prayerName}>{name}</span>
                   <span className={styles.prayerTimeValue}>{time}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           )}
+        </motion.section>
+
+        {/* New Lailatul Qadar Section */}
+        <motion.section 
+          className={styles.lailatulQadarSection}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+        >
+          <h2 className={styles.sectionTitle}>
+            <Star className={styles.sectionIcon} /> Lailatul Qadar
+          </h2>
+          
+          <div className={styles.lailatulQadarInfo}>
+            <p className={styles.lailatulQadarText}>
+              Lailatul Qadar adalah malam yang lebih baik dari seribu bulan. Berikut perkiraan malam-malam ganjil pada 10 hari terakhir Ramadhan:
+            </p>
+            
+            <div className={styles.lailatulQadarDates}>
+              {lailatulQadarDays.map((day) => (
+                <motion.div 
+                  key={day} 
+                  className={styles.lailatulQadarDate}
+                  whileHover={{ scale: 1.05 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 * (day-20) }}
+                >
+                  <div className={styles.lqDay}>{day}</div>
+                  <div className={styles.lqDate}>{calculateLailatulQadarDate(day)}</div>
+                  <div className={styles.lqLabel}>Ramadhan</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         </motion.section>
 
         <motion.section 
           className={styles.duaSection}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
+          transition={{ delay: 0.5 }}
         >
           <h2 className={styles.sectionTitle}>
             <Calendar className={styles.sectionIcon} /> Doa-doa Puasa Ramadhan
@@ -241,6 +439,24 @@ const Home = () => {
                 </div>
               </Accordion.Content>
             </Accordion.Item>
+            
+            <Accordion.Item value="lailatulqadar" className={styles.accordionItem}>
+              <Accordion.Trigger className={styles.accordionTrigger}>
+                Doa Lailatul Qadar
+                <ChevronDown className={styles.accordionChevron} />
+              </Accordion.Trigger>
+              <Accordion.Content className={styles.accordionContent}>
+                <div className={styles.arabicText}>
+                  اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي
+                </div>
+                <div className={styles.latinText}>
+                  Allahumma innaka 'afuwwun tuhibbul 'afwa fa'fu 'anni
+                </div>
+                <div className={styles.meaningText}>
+                  "Ya Allah, sesungguhnya Engkau Maha Pemaaf, Engkau menyukai maaf, maka maafkanlah aku."
+                </div>
+              </Accordion.Content>
+            </Accordion.Item>
           </Accordion.Root>
         </motion.section>
 
@@ -261,7 +477,7 @@ const Home = () => {
         className={styles.musicToggleBtn} 
         onClick={toggleMusicPlayer}
       >
-        <Music size={24} />
+        <Music size={20} />
       </button>
 
       {/* Floating Music Player */}
@@ -272,6 +488,7 @@ const Home = () => {
             initial={{ y: 100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
+            transition={{ type: "spring", damping: 20 }}
           >
             <div className={styles.musicPlayerContent}>
               <div className={styles.songInfo}>
