@@ -12,7 +12,7 @@ const Home = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [prayerTimes, setPrayerTimes] = useState(null);
   const [city, setCity] = useState('Jakarta');
-  const [daysLeft, setDaysLeft] = useState(15);
+  const [daysLeft, setDaysLeft] = useState(1);
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: '/ramadan.mp3' });
@@ -123,7 +123,7 @@ const Home = () => {
   // Correct Lailatul Qadar dates for 2025 Ramadan
   const calculateLailatulQadarDate = (day) => {
     // Ramadan 2025 is expected to start around March 15, 2025
-    const ramadanStart = new Date(2025, 2, 15); // March 15, 2025
+    const ramadanStart = new Date(2025, 3, 1); // March 15, 2025
     const date = new Date(ramadanStart);
     date.setDate(ramadanStart.getDate() + day - 1);
     return format(date, 'dd MMMM yyyy');
@@ -426,7 +426,7 @@ const Home = () => {
             <div className={styles.footerLine}></div>
             <p className={styles.footerText}>Ramadhan Tiba</p>
             <p className={styles.footerTextSmall}>Ya Maulana</p>
-            <p className={styles.footerTextSmall}>Created by Muhammad_Ihsan</p>
+            <p className={styles.footerTextSmall}>Created by Rlzyy</p>
           </footer>
         </main>
 
