@@ -1,24 +1,61 @@
-Welcome to the NextJS base template bootstrapped using the `create-next-app`. This template supports TypeScript, but you can use normal JavaScript as well.
 
-## Getting Started
+# 🌙 Ramadhan 2025
 
-Hit the run button to start the development server.
+![Ramadhan Kareem](https://img.shields.io/badge/Ramadhan-Kareem-green)
+![Next.js](https://img.shields.io/badge/Next.js-14.1.0-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+A beautiful and responsive web application for Ramadhan 2025/1446H that provides prayer times, fasting schedules, and spiritual guidance for Muslims around the world.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on `/api/hello`. This endpoint can be edited in `pages/api/hello.ts`.
+## ✨ Features
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- 🕌 **Prayer Times**: Real-time prayer schedules for your location
+- 📆 **Ramadhan Calendar**: Complete fasting schedule for Ramadhan 2025
+- 🌃 **Lailatul Qadar Guide**: Information about the blessed nights
+- 🌐 **Location Support**: Prayer times for cities worldwide
+- 📱 **Responsive Design**: Works on all devices
 
-## Learn More
+## 🚀 Getting Started
 
-To learn more about Next.js, take a look at the following resources:
+Clone and run the development server:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run dev
+# or
+yarn dev
+```
 
-## Productionizing your Next App
+Open [http://0.0.0.0:3000](http://0.0.0.0:3000) with your browser to see the result.
 
-To make your next App run smoothly in production make sure to deploy your project with [Repl Deployments](https://docs.replit.com/hosting/deployments/about-deployments)!
+## 🧰 Tech Stack
 
-You can also produce a production build by running `npm run build` and [changing the run command](https://docs.replit.com/programming-ide/configuring-repl#run) to `npm run start`.
+- **Framework**: [Next.js](https://nextjs.org/)
+- **Styling**: [TailwindCSS](https://tailwindcss.com/)
+- **Animation**: [Framer Motion](https://www.framer.com/motion/)
+- **UI Components**: [Radix UI](https://www.radix-ui.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Date Handling**: [date-fns](https://date-fns.org/)
+
+## 📦 Project Structure
+
+```
+/
+├── pages/           # Next.js pages
+├── public/          # Static assets
+├── styles/          # CSS files
+└── components/      # React components
+```
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check [issues page](https://github.com/yourusername/ramadhan2025/issues).
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🙏 Ramadhan Kareem
+
+May Allah accept our fasting, prayers, and good deeds during this blessed month.
+
+رَمَضَان كَرِيم 
