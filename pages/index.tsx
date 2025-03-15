@@ -102,8 +102,7 @@ const Home = () => {
                 repeat: Infinity 
               }}
             >
-              <div className={styles.loaderIcon}>🌙</div>
-              <div className={styles.loadingText}>Loading...</div>
+              <span className={styles.loader}></span>
             </motion.div>
           </motion.div>
         )}
