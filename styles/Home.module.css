@@ -6,6 +6,89 @@
   padding: 1rem;
   position: relative;
   overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.searchForm {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.searchBox {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.searchInput {
+  background: transparent;
+  border: none;
+  color: white;
+  width: 100%;
+  font-size: 1rem;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.searchButton {
+  background: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  padding: 0.5rem 1.5rem;
+  border-radius: 0.75rem;
+  color: #ffd700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.searchButton:hover {
+  background: rgba(255, 215, 0, 0.3);
+}
+
+.audioPlayer {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.songInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #ffd700;
+}
+
+.playButton {
+  background: rgba(255, 215, 0, 0.2);
+  border: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffd700;
+  transition: all 0.2s;
+}
+
+.playButton:hover {
+  background: rgba(255, 215, 0, 0.3);
+  transform: scale(1.05);
 }
 
 .backgroundPattern {

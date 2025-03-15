@@ -1,11 +1,10 @@
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Accordion from '@radix-ui/react-accordion';
-import * as Select from '@radix-ui/react-select';
-import { ChevronDown, Clock, Calendar, Moon, Sun } from 'lucide-react';
+import { ChevronDown, Clock, Calendar, Moon, Sun, Play, Pause, Music, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../styles/Home.module.css';
 
@@ -14,6 +13,31 @@ const Home = () => {
   const [city, setCity] = useState('Jakarta');
   const [daysLeft, setDaysLeft] = useState(15);
   const [loading, setLoading] = useState(true);
+const [isPlaying, setIsPlaying] = useState(false);
+const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: '/ramadan.mp3' });
+const [cityInput, setCityInput] = useState('Jakarta');
+const audioRef = useRef(null);
+
+const songs = [
+  { title: 'Ramadan Nasheed', url: '/ramadan.mp3' },
+  { title: 'Islamic Prayer', url: '/prayer.mp3' }
+];
+
+const togglePlay = () => {
+  if (audioRef.current) {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  }
+};
+
+const handleCitySubmit = (e) => {
+  e.preventDefault();
+  setCity(cityInput);
+};
 
   useEffect(() => {
     const fetchPrayerTimes = async () => {
@@ -86,30 +110,42 @@ const Home = () => {
         >
           <div className={styles.citySelector}>
             <h3>Jadwal Sholat</h3>
-            <Select.Root value={city} onValueChange={setCity}>
-              <Select.Trigger className={styles.selectTrigger}>
-                <Select.Value>{city}</Select.Value>
-                <Select.Icon>
-                  <ChevronDown size={20} />
-                </Select.Icon>
-              </Select.Trigger>
-              <Select.Portal>
-                <Select.Content className={styles.selectContent}>
-                  <Select.Viewport>
-                    <Select.Item value="Jakarta" className={styles.selectItem}>
-                      <Select.ItemText>Jakarta</Select.ItemText>
-                    </Select.Item>
-                    <Select.Item value="Surabaya" className={styles.selectItem}>
-                      <Select.ItemText>Surabaya</Select.ItemText>
-                    </Select.Item>
-                    <Select.Item value="Bandung" className={styles.selectItem}>
-                      <Select.ItemText>Bandung</Select.ItemText>
-                    </Select.Item>
-                  </Select.Viewport>
-                </Select.Content>
-              </Select.Portal>
-            </Select.Root>
+            <form onSubmit={handleCitySubmit} className={styles.searchForm}>
+              <div className={styles.searchBox}>
+                <Search size={20} />
+                <input
+                  type="text"
+                  value={cityInput}
+                  onChange={(e) => setCityInput(e.target.value)}
+                  placeholder="Masukkan nama kota..."
+                  className={styles.searchInput}
+                />
+              </div>
+              <button type="submit" className={styles.searchButton}>
+                Cari
+              </button>
+            </form>
           </div>
+
+          <motion.div 
+            className={styles.audioPlayer}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className={styles.songInfo}>
+              <Music size={20} />
+              <span>{currentSong.title}</span>
+            </div>
+            <button onClick={togglePlay} className={styles.playButton}>
+              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
+            </button>
+            <audio
+              ref={audioRef}
+              src={currentSong.url}
+              onEnded={() => setIsPlaying(false)}
+            />
+          </motion.div>
 
           {loading ? (
             <div className={styles.loading}>Loading...</div>
