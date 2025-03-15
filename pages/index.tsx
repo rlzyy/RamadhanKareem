@@ -10,41 +10,41 @@ import styles from '../styles/Home.module.css';
 
 const Home = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  
+  const [prayerTimes, setPrayerTimes] = useState(null);
+  const [city, setCity] = useState('Jakarta');
+  const [daysLeft, setDaysLeft] = useState(15);
+  const [loading, setLoading] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: '/ramadan.mp3' });
+  const [cityInput, setCityInput] = useState('Jakarta');
+  const audioRef = useRef(null);
+
   useEffect(() => {
     setTimeout(() => {
       setIsInitialLoading(false);
     }, 2000);
   }, []);
-  const [prayerTimes, setPrayerTimes] = useState(null);
-  const [city, setCity] = useState('Jakarta');
-  const [daysLeft, setDaysLeft] = useState(15);
-  const [loading, setLoading] = useState(true);
-const [isPlaying, setIsPlaying] = useState(false);
-const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: '/ramadan.mp3' });
-const [cityInput, setCityInput] = useState('Jakarta');
-const audioRef = useRef(null);
 
-const songs = [
-  { title: 'Ramadan Nasheed', url: '/ramadan.mp3' },
-  { title: 'Islamic Prayer', url: '/prayer.mp3' }
-];
+  const songs = [
+    { title: 'Ramadan Nasheed', url: '/ramadan.mp3' },
+    { title: 'Islamic Prayer', url: '/prayer.mp3' }
+  ];
 
-const togglePlay = () => {
-  if (audioRef.current) {
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
+  const togglePlay = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
     }
-    setIsPlaying(!isPlaying);
-  }
-};
+  };
 
-const handleCitySubmit = (e) => {
-  e.preventDefault();
-  setCity(cityInput);
-};
+  const handleCitySubmit = (e) => {
+    e.preventDefault();
+    setCity(cityInput);
+  };
 
   useEffect(() => {
     const fetchPrayerTimes = async () => {
@@ -65,7 +65,7 @@ const handleCitySubmit = (e) => {
   }, [city]);
 
   return (
-    <>
+    <div className={styles.container}>
       <AnimatePresence>
         {isInitialLoading && (
           <motion.div 
@@ -88,7 +88,7 @@ const handleCitySubmit = (e) => {
           </motion.div>
         )}
       </AnimatePresence>
-      <div className={styles.container}>
+
       <motion.div 
         className={styles.backgroundPattern}
         animate={{ 
@@ -103,7 +103,12 @@ const handleCitySubmit = (e) => {
       />
       
       <main className={styles.main}>
-        <motion.div className={styles.header}>
+        <motion.div 
+          className={styles.header}
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
           <h2 className={styles.subtitle}>Selamat Menunaikan Ibadah Puasa</h2>
           <h2 className={styles.subtitle}>1446 H</h2>
         </motion.div>
@@ -112,7 +117,7 @@ const handleCitySubmit = (e) => {
           className={styles.countdownCard}
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2 }}
+          transition={{ delay: 0.3 }}
         >
           <h3 className={styles.countdownTitle}>🌙 Hitung Mundur</h3>
           <div className={styles.countdownContent}>
