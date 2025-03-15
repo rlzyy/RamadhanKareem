@@ -16,7 +16,7 @@ const Home = () => {
   const [daysLeft, setDaysLeft] = useState(0);
   const [loading, setLoading] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: '/ramadan.mp3' });
+  const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: 'https://files.catbox.moe/bhjbov.mp3' });
   const [cityInput, setCityInput] = useState('');
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -25,41 +25,33 @@ const Home = () => {
   const audioRef = useRef(null);
   const searchRef = useRef(null);
   
-  // Ramadan 2025 starts on March 1, 2025
-  const ramadanStartDate = new Date(2025, 2, 1); // Month is 0-indexed
+  const ramadanStartDate = new Date(2025, 2, 1); 
 
   useEffect(() => {
-    // Calculate days left until Ramadan
     const calculateDaysLeft = () => {
       const today = new Date();
       
-      // If we're before Ramadan start
       if (today < ramadanStartDate) {
         const daysToRamadan = differenceInDays(ramadanStartDate, today);
         setDaysLeft(daysToRamadan);
         return;
       }
       
-      // If we're in Ramadan (which lasts 29 or 30 days)
       const ramadanEndDate = new Date(ramadanStartDate);
-      ramadanEndDate.setDate(ramadanStartDate.getDate() + 29); // Assuming 30 days
+      ramadanEndDate.setDate(ramadanStartDate.getDate() + 29); 
       
       if (today <= ramadanEndDate) {
-        const daysLeftInRamadan = differenceInDays(ramadanEndDate, today) + 1; // +1 to include today
+        const daysLeftInRamadan = differenceInDays(ramadanEndDate, today) + 1;
         setDaysLeft(daysLeftInRamadan);
         return;
       }
       
-      // If Ramadan is over
       setDaysLeft(0);
     };
     
     calculateDaysLeft();
     
-    // Refresh countdown every day
-    const interval = setInterval(calculateDaysLeft, 86400000); // 24 hours
-    
-    // Trigger animation every 10 seconds
+    const interval = setInterval(calculateDaysLeft, 86400000); 
     const animationInterval = setInterval(() => {
       setCountdownAnimation(true);
       setTimeout(() => setCountdownAnimation(false), 1000);
@@ -72,13 +64,11 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    // Reduce loading time for better performance
     setTimeout(() => {
       setIsInitialLoading(false);
     }, 1000);
   }, []);
 
-  // Fewer stars for better performance
   const generateStars = (count) => {
     const stars = [];
     for (let i = 0; i < count; i++) {
@@ -94,12 +84,12 @@ const Home = () => {
     return stars;
   };
 
-  const bgStars = generateStars(70); // Reduced from 150 to 70 stars
+  const bgStars = generateStars(70);
 
   const songs = [
-    { title: 'Ramadan Nasheed', url: '/ramadan.mp3' },
-    { title: 'Islamic Prayer', url: '/prayer.mp3' },
-    { title: 'Ya Maulana', url: '/yamaulana.mp3' }
+    { title: 'Ramadan Nasheed', url: 'https://files.catbox.moe/bhjbov.mp3' },
+    { title: 'Marhaban Ya Ramadhan', url: 'https://files.catbox.moe/w0bp0y.mp3' },
+    { title: 'Ya Maulana', url: 'https://files.catbox.moe/bfpybm.mp3' }
   ];
 
   const cities = [
@@ -168,10 +158,9 @@ const Home = () => {
     return format(today, 'dd MMMM yyyy');
   };
 
-  // Correct Lailatul Qadar dates for 2025 Ramadan
   const calculateLailatulQadarDate = (day) => {
-    // Ramadan 2025 is expected to start around March 1, 2025
-    const ramadanStart = new Date(2025, 2, 1); // March 1, 2025 (month is 0-indexed)
+
+    const ramadanStart = new Date(2025, 2, 1);
     const date = new Date(ramadanStart);
     date.setDate(ramadanStart.getDate() + day - 1);
     return format(date, 'dd MMMM yyyy');
@@ -191,7 +180,7 @@ const Home = () => {
             <motion.div 
               className={styles.loadingScreen}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }} // Faster transition
+              transition={{ duration: 0.5 }} // transition
             >
               <motion.div 
                 className={styles.loadingContent}
@@ -211,7 +200,6 @@ const Home = () => {
           )}
         </AnimatePresence>
 
-        {/* Animated Background Elements - with enhanced star animation */}
         <div className={styles.starsContainer}>
           {bgStars.map((star) => (
             <motion.div
@@ -415,7 +403,6 @@ const Home = () => {
             )}
           </section>
 
-          {/* Lailatul Qadar Section - with corrected dates */}
           <section className={styles.lailatulQadarSection}>
             <h2 className={styles.sectionTitle}>
               <Star className={styles.sectionIcon} /> Lailatul Qadar
@@ -515,20 +502,15 @@ const Home = () => {
           </div>
 
           <footer className={styles.footer}>
-            <p className={styles.footerText}>Sabtu, 1 Maret 2025</p>
+            <p className={styles.footerTextSmall}>Created by @Rlzyy</p>
             <div className={styles.footerLine}></div>
-            <p className={styles.footerText}>Ramadhan Tiba</p>
-            <p className={styles.footerTextSmall}>Ya Maulana</p>
-            <p className={styles.footerTextSmall}>Created by Rlzyy</p>
           </footer>
         </main>
 
-        {/* Floating Music Player Toggle Button */}
         <button className={styles.musicToggleBtn} onClick={toggleMusicPlayer}>
           <Music size={20} />
         </button>
 
-        {/* Floating Music Player */}
         <AnimatePresence>
           {showMusicPlayer && (
             <div className={styles.floatingMusicPlayer}>
