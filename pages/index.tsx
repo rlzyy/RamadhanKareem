@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
@@ -122,8 +123,8 @@ const Home = () => {
 
   // Correct Lailatul Qadar dates for 2025 Ramadan
   const calculateLailatulQadarDate = (day) => {
-    // Ramadan 2025 is expected to start around March 15, 2025
-    const ramadanStart = new Date(2025, 3, 1); // March 15, 2025
+    // Ramadan 2025 is expected to start around March 1, 2025
+    const ramadanStart = new Date(2025, 2, 1); // March 1, 2025 (month is 0-indexed)
     const date = new Date(ramadanStart);
     date.setDate(ramadanStart.getDate() + day - 1);
     return format(date, 'dd MMMM yyyy');
@@ -163,7 +164,7 @@ const Home = () => {
           )}
         </AnimatePresence>
 
-        {/* Animated Background Elements - with reduced animation complexity */}
+        {/* Animated Background Elements - with enhanced star animation */}
         <div className={styles.starsContainer}>
           {bgStars.map((star) => (
             <motion.div
@@ -176,10 +177,11 @@ const Home = () => {
                 height: `${star.size}px`,
               }}
               animate={{
-                opacity: [star.opacity, star.opacity * 0.3, star.opacity]
+                opacity: [star.opacity, star.opacity * 0.3, star.opacity],
+                scale: [1, 1.2, 1]
               }}
               transition={{
-                duration: 3,
+                duration: 3 + Math.random() * 2,
                 delay: star.blinkDelay,
                 repeat: Infinity,
                 repeatType: "reverse"
@@ -190,7 +192,17 @@ const Home = () => {
 
         <div className={styles.crescentMoon} />
 
-        <div className={styles.backgroundPattern} />
+        <motion.div 
+          className={styles.backgroundPattern}
+          animate={{ 
+            opacity: [0.2, 0.25, 0.2] 
+          }}
+          transition={{ 
+            duration: 8, 
+            repeat: Infinity,
+            repeatType: "reverse" 
+          }}
+        />
 
         <header className={styles.header}>
           <h1 className={styles.title}>Ramadhan Kareem</h1>
@@ -422,7 +434,7 @@ const Home = () => {
           </div>
 
           <footer className={styles.footer}>
-            <p className={styles.footerText}>Sabtu, 15 Maret 2025</p>
+            <p className={styles.footerText}>Sabtu, 1 Maret 2025</p>
             <div className={styles.footerLine}></div>
             <p className={styles.footerText}>Ramadhan Tiba</p>
             <p className={styles.footerTextSmall}>Ya Maulana</p>

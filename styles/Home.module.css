@@ -1,7 +1,7 @@
 
 .container {
   min-height: 100vh;
-  background: linear-gradient(145deg, #053720 0%, #0a4d2e 50%, #043318 100%);
+  background: linear-gradient(145deg, #022511 0%, #054020 50%, #021b0c 100%);
   color: #ffffff;
   padding: 0;
   position: relative;
@@ -24,6 +24,7 @@
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 50%;
   pointer-events: none;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
 }
 
 .crescentMoon {
@@ -140,7 +141,7 @@
 
 /* Countdown Section */
 .countdownSection {
-  background: rgba(10, 77, 46, 0.8);
+  background: rgba(5, 47, 27, 0.85);
   border-radius: 1rem;
   padding: 1.5rem;
   margin: 1rem 0;
@@ -177,7 +178,7 @@
 
 /* Prayer Times Section */
 .prayerSection {
-  background: rgba(10, 77, 46, 0.8);
+  background: rgba(5, 47, 27, 0.85);
   border-radius: 1rem;
   padding: 1.5rem;
   margin: 1rem 0;
@@ -421,7 +422,7 @@
 
 /* Lailatul Qadar Section */
 .lailatulQadarSection {
-  background: rgba(10, 77, 46, 0.8);
+  background: rgba(5, 47, 27, 0.85);
   border-radius: 1rem;
   padding: 1.5rem;
   margin: 1rem 0;
@@ -480,7 +481,7 @@
 
 /* Duas Section */
 .duaSection {
-  background: rgba(10, 77, 46, 0.8);
+  background: rgba(5, 47, 27, 0.85);
   border-radius: 1rem;
   padding: 1.5rem;
   margin: 1rem 0;
