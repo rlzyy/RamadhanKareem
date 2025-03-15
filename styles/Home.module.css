@@ -1,4 +1,15 @@
 
+.container {
+  min-height: 100vh;
+  background: #0a4d2e;
+  color: #fff;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Loading Screen */
 .loadingScreen {
   position: fixed;
   top: 0;
@@ -12,279 +23,200 @@
   z-index: 1000;
 }
 
+.loadingContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loaderIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
 .loadingText {
   color: #ffd700;
   font-size: 1.5rem;
   text-align: center;
 }
 
-.container {
-  min-height: 100vh;
-  background: #0a4d2e;
-  color: #fff;
-  padding: 1.5rem;
-  position: relative;
-  overflow: hidden;
-  font-family: 'Inter', sans-serif;
-}
-
-.searchForm {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.searchBox {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 0.75rem;
-  padding: 0.5rem 1rem;
-  gap: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.searchInput {
-  background: transparent;
-  border: none;
-  color: white;
-  width: 100%;
-  font-size: 1rem;
-  outline: none;
-}
-
-.searchInput::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.searchButton {
-  background: rgba(255, 215, 0, 0.2);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  padding: 0.5rem 1.5rem;
-  border-radius: 0.75rem;
-  color: #ffd700;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.searchButton:hover {
-  background: rgba(255, 215, 0, 0.3);
-}
-
-.audioPlayer {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 1rem;
-  padding: 1rem;
-  margin: 1rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.songInfo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: #ffd700;
-}
-
-.playButton {
-  background: rgba(255, 215, 0, 0.2);
-  border: none;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #ffd700;
-  transition: all 0.2s;
-}
-
-.playButton:hover {
-  background: rgba(255, 215, 0, 0.3);
-  transform: scale(1.05);
-}
-
-.backgroundPattern {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 50l-25-25L0 50l25 25 25-25zm0 0l25 25 25-25-25-25-25 25z' fill='%23ffffff' fill-opacity='0.1'/%3E%3C/svg%3E");
-  pointer-events: none;
-}
-
-.main {
-  max-width: 800px;
-  margin: 0 auto;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  position: relative;
-  z-index: 1;
-}
-
+/* Header */
 .header {
-  margin-bottom: 1rem;
-  backdrop-filter: blur(10px);
-  padding: 2rem;
-  border-radius: 1.5rem;
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.arabicTitle {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
+  background: linear-gradient(to bottom, rgba(10, 77, 46, 0.9), rgba(10, 77, 46, 1));
   color: #ffd700;
-  font-family: 'Amiri', serif;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .title {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #fff;
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  font-size: 1.8rem;
+  margin: 0;
+  font-weight: bold;
+  color: #ffd700;
 }
 
 .subtitle {
-  font-size: 1.2rem;
-  color: #eee;
+  font-size: 1rem;
+  margin: 0.5rem 0 0;
+  font-weight: normal;
+  color: #fff;
 }
 
-.countdownCard {
-  background: #0F5837;
+/* Main content */
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: 0 1rem;
+}
+
+/* Section titles */
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  color: #ffd700;
+  font-size: 1.25rem;
+  margin: 0 0 1rem;
+  font-weight: 600;
+}
+
+.sectionIcon {
+  margin-right: 0.5rem;
+  color: #ffd700;
+}
+
+/* Countdown Section */
+.countdownSection {
+  background: rgba(10, 77, 46, 0.7);
   border-radius: 1rem;
   padding: 1.5rem;
-  margin-bottom: 1rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.countdownBox {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+  margin: 1rem 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .daysLeft {
-  font-size: 4rem;
+  font-size: 3rem;
   font-weight: bold;
   color: #ffd700;
+  margin-bottom: 0.5rem;
+}
+
+.blessingText {
+  text-align: center;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  margin-top: 1rem;
+}
+
+/* Prayer Times Section */
+.prayerSection {
+  background: rgba(10, 77, 46, 0.7);
+  border-radius: 1rem;
+  padding: 1.5rem;
   margin: 1rem 0;
-  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-}
-
-.icon {
-  color: #ffd700;
-  width: 2rem;
-  height: 2rem;
-  margin-bottom: 1rem;
-  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
-}
-
-.prayerTimesCard {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 1.5rem;
-  padding: 2rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .citySelector {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-bottom: 1.5rem;
 }
 
-.selectTrigger {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.75rem;
-  color: white;
-  cursor: pointer;
+.citySelector p {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.cityName {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #ffd700;
+}
+
+.cityOptions {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   gap: 0.5rem;
-  font-size: 1rem;
-  transition: all 0.2s;
 }
 
-.selectTrigger:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.selectContent {
-  background: rgba(26, 103, 65, 0.95);
-  border-radius: 0.75rem;
-  padding: 0.5rem;
-  color: white;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.selectItem {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-radius: 0.5rem;
-}
-
-.selectItem:hover {
+.cityOption {
   background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+.activeCityOption {
+  background: rgba(255, 215, 0, 0.2);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #ffd700;
+}
+
+.cityOption:hover {
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .prayerList {
-  display: grid;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .prayerTime {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1rem;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
   background: rgba(255, 255, 255, 0.05);
-  border-radius: 0.75rem;
-  transition: all 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
 }
 
-.prayerTime:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateX(5px);
+.prayerName {
+  color: #fff;
 }
 
-.timeIcon {
+.prayerTimeValue {
   color: #ffd700;
-  width: 1.5rem;
-  height: 1.5rem;
-  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+  font-weight: 500;
 }
 
+/* Duas Section */
 .duaSection {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 1.5rem;
-  padding: 2rem;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 77, 46, 0.7);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .accordionItem {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .accordionTrigger {
   width: 100%;
   background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: none;
   padding: 1rem;
   border-radius: 0.75rem;
   color: white;
@@ -292,7 +224,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: all 0.2s;
+  text-align: left;
+  font-size: 0.95rem;
 }
 
 .accordionTrigger:hover {
@@ -320,15 +253,165 @@
 }
 
 .arabicText {
-  padding: 1.5rem;
-  font-size: 1.5rem;
+  padding: 1.5rem 0 0.75rem;
+  font-size: 1.25rem;
   text-align: right;
   direction: rtl;
   font-family: 'Amiri', serif;
   color: #ffd700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
+.latinText {
+  padding: 0.5rem 0;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-style: italic;
+}
+
+.meaningText {
+  padding: 0.5rem 0 1rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Ramadan Arabic Text */
+.ramadanArabic {
+  font-family: 'Amiri', serif;
+  font-size: 3rem;
+  text-align: center;
+  color: #ffd700;
+  margin: 1.5rem 0 0;
+  opacity: 0.9;
+}
+
+.ramadanSubtext {
+  font-family: 'Amiri', serif;
+  font-size: 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 1rem;
+}
+
+/* Footer */
+.footer {
+  margin-top: 1.5rem;
+  padding: 1.5rem 0;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footerText {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.footerTextSmall {
+  margin: 0.25rem 0;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.footerLine {
+  width: 50px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 0.5rem auto;
+}
+
+/* Floating Music Player */
+.musicToggleBtn {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(255, 215, 0, 0.3);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffd700;
+  z-index: 100;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.floatingMusicPlayer {
+  position: fixed;
+  bottom: 5rem;
+  right: 1.5rem;
+  width: 16rem;
+  background: rgba(10, 77, 46, 0.95);
+  border-radius: 1rem;
+  overflow: hidden;
+  z-index: 99;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.musicPlayerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.songInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #ffd700;
+  font-size: 0.9rem;
+}
+
+.musicControls {
+  display: flex;
+  align-items: center;
+}
+
+.playButton {
+  background: rgba(255, 215, 0, 0.2);
+  border: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #ffd700;
+}
+
+.songsList {
+  max-height: 10rem;
+  overflow-y: auto;
+}
+
+.songItem {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.songItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.activeSong {
+  background: rgba(255, 215, 0, 0.1);
+  color: #ffd700;
+}
+
+/* Animations */
 @keyframes slideDown {
   from {
     height: 0;

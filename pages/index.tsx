@@ -17,6 +17,7 @@ const Home = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentSong, setCurrentSong] = useState({ title: 'Ramadan Nasheed', url: '/ramadan.mp3' });
   const [cityInput, setCityInput] = useState('Jakarta');
+  const [showMusicPlayer, setShowMusicPlayer] = useState(false);
   const audioRef = useRef(null);
 
   useEffect(() => {
@@ -38,6 +39,15 @@ const Home = () => {
         audioRef.current.play();
       }
       setIsPlaying(!isPlaying);
+    }
+  };
+
+  const changeSong = (song) => {
+    setCurrentSong(song);
+    setIsPlaying(true);
+    if (audioRef.current) {
+      audioRef.current.load();
+      audioRef.current.play();
     }
   };
 
@@ -64,6 +74,15 @@ const Home = () => {
     fetchPrayerTimes();
   }, [city]);
 
+  const toggleMusicPlayer = () => {
+    setShowMusicPlayer(!showMusicPlayer);
+  };
+
+  const formatDate = () => {
+    const today = new Date();
+    return format(today, 'dd MMMM yyyy');
+  };
+
   return (
     <div className={styles.container}>
       <AnimatePresence>
@@ -73,7 +92,7 @@ const Home = () => {
             exit={{ opacity: 0 }}
           >
             <motion.div 
-              className={styles.loadingText}
+              className={styles.loadingContent}
               animate={{ 
                 opacity: [0.5, 1, 0.5],
                 scale: [0.95, 1, 0.95]
@@ -83,141 +102,110 @@ const Home = () => {
                 repeat: Infinity 
               }}
             >
-              Loading...
+              <div className={styles.loaderIcon}>🌙</div>
+              <div className={styles.loadingText}>Loading...</div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <motion.div 
-        className={styles.backgroundPattern}
-        animate={{ 
-          opacity: [0.3, 0.5, 0.3],
-          scale: [1, 1.1, 1]
-        }}
-        transition={{ 
-          duration: 10, 
-          repeat: Infinity,
-          repeatType: "reverse" 
-        }}
-      />
-      
+      <header className={styles.header}>
+        <h1 className={styles.title}>Ramadhan Kareem</h1>
+        <h2 className={styles.subtitle}>Selamat Menunaikan Ibadah Puasa</h2>
+        <h3 className={styles.subtitle}>1446 H | {formatDate()}</h3>
+      </header>
+
       <main className={styles.main}>
-        <motion.div 
-          className={styles.header}
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+        <motion.section 
+          className={styles.countdownSection}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h2 className={styles.subtitle}>Selamat Menunaikan Ibadah Puasa</h2>
-          <h2 className={styles.subtitle}>1446 H</h2>
-        </motion.div>
-
-        <motion.div 
-          className={styles.countdownCard}
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-        >
-          <h3 className={styles.countdownTitle}>🌙 Hitung Mundur</h3>
-          <div className={styles.countdownContent}>
+          <h2 className={styles.sectionTitle}>
+            <Moon className={styles.sectionIcon} /> Hitung Mundur
+          </h2>
+          <div className={styles.countdownBox}>
             <div className={styles.daysLeft}>{daysLeft}</div>
             <p>Hari Tersisa</p>
-            <small>Ramadhan Mubarak! Semoga Allah memberkati puasa dan doa kalian.</small>
           </div>
-        </motion.div>
+          <p className={styles.blessingText}>
+            Ramadhan Mubarak! Semoga Allah memberkati puasa dan doa kalian.
+          </p>
+        </motion.section>
 
-        <motion.div 
-          className={styles.prayerTimesCard}
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.4 }}
+        <motion.section 
+          className={styles.prayerSection}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
         >
+          <h2 className={styles.sectionTitle}>
+            <Sun className={styles.sectionIcon} /> Jadwal Sholat
+          </h2>
+          
           <div className={styles.citySelector}>
-            <h3>Jadwal Sholat</h3>
+            <p>Kota</p>
+            <div className={styles.cityName}>{city}</div>
             <form onSubmit={handleCitySubmit} className={styles.searchForm}>
-              <div className={styles.searchBox}>
-                <Search size={20} />
-                <input
-                  type="text"
-                  value={cityInput}
-                  onChange={(e) => setCityInput(e.target.value)}
-                  placeholder="Masukkan nama kota..."
-                  className={styles.searchInput}
-                />
+              <div className={styles.cityOptions}>
+                <button 
+                  type="button" 
+                  className={city === 'Jakarta' ? styles.activeCityOption : styles.cityOption}
+                  onClick={() => {setCityInput('Jakarta'); setCity('Jakarta');}}
+                >
+                  Jakarta
+                </button>
+                <button 
+                  type="button" 
+                  className={city === 'Bandung' ? styles.activeCityOption : styles.cityOption}
+                  onClick={() => {setCityInput('Bandung'); setCity('Bandung');}}
+                >
+                  Bandung
+                </button>
+                <button 
+                  type="button" 
+                  className={city === 'Surabaya' ? styles.activeCityOption : styles.cityOption}
+                  onClick={() => {setCityInput('Surabaya'); setCity('Surabaya');}}
+                >
+                  Surabaya
+                </button>
               </div>
-              <button type="submit" className={styles.searchButton}>
-                Cari
-              </button>
             </form>
           </div>
-
-          <motion.div 
-            className={styles.audioPlayer}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className={styles.songInfo}>
-              <Music size={20} />
-              <span>{currentSong.title}</span>
-            </div>
-            <button onClick={togglePlay} className={styles.playButton}>
-              {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-            </button>
-            <audio
-              ref={audioRef}
-              src={currentSong.url}
-              onEnded={() => setIsPlaying(false)}
-            />
-          </motion.div>
 
           {loading ? (
             <div className={styles.loading}>Loading...</div>
           ) : (
-            <AnimatePresence>
-              <motion.div 
-                className={styles.prayerList}
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  visible: { transition: { staggerChildren: 0.1 } }
-                }}
-              >
-                {prayerTimes && Object.entries({
-                  Imsak: [prayerTimes.Imsak, <Moon key="imsak" />],
-                  Subuh: [prayerTimes.Fajr, <Sun key="subuh" />],
-                  Dzuhur: [prayerTimes.Dhuhr, <Sun key="dzuhur" />],
-                  Ashar: [prayerTimes.Asr, <Sun key="ashar" />],
-                  Maghrib: [prayerTimes.Maghrib, <Moon key="maghrib" />],
-                  Isya: [prayerTimes.Isha, <Moon key="isya" />]
-                }).map(([name, [time, icon]], index) => (
-                  <motion.div
-                    key={name}
-                    className={styles.prayerTime}
-                    variants={{
-                      hidden: { opacity: 0, x: -20 },
-                      visible: { opacity: 1, x: 0 }
-                    }}
-                    whileHover={{ x: 10, transition: { duration: 0.2 } }}
-                  >
-                    {icon}
-                    <span>{name}</span>
-                    <span>{time}</span>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </AnimatePresence>
+            <div className={styles.prayerList}>
+              {prayerTimes && Object.entries({
+                Imsak: prayerTimes.Imsak,
+                Subuh: prayerTimes.Fajr,
+                Terbit: '05:57',
+                Dzuhur: prayerTimes.Dhuhr,
+                Ashar: prayerTimes.Asr,
+                Maghrib: prayerTimes.Maghrib,
+                Isya: prayerTimes.Isha
+              }).map(([name, time]) => (
+                <div key={name} className={styles.prayerTime}>
+                  <span className={styles.prayerName}>{name}</span>
+                  <span className={styles.prayerTimeValue}>{time}</span>
+                </div>
+              ))}
+            </div>
           )}
-        </motion.div>
+        </motion.section>
 
-        <motion.div 
+        <motion.section 
           className={styles.duaSection}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
+          transition={{ delay: 0.4 }}
         >
-          <h3>Doa-doa Puasa Ramadhan</h3>
+          <h2 className={styles.sectionTitle}>
+            <Calendar className={styles.sectionIcon} /> Doa-doa Puasa Ramadhan
+          </h2>
+          
           <Accordion.Root type="single" collapsible>
             <Accordion.Item value="niat" className={styles.accordionItem}>
               <Accordion.Trigger className={styles.accordionTrigger}>
@@ -225,14 +213,15 @@ const Home = () => {
                 <ChevronDown className={styles.accordionChevron} />
               </Accordion.Trigger>
               <Accordion.Content className={styles.accordionContent}>
-                <motion.div 
-                  className={styles.arabicText}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
+                <div className={styles.arabicText}>
                   نَوَيْتُ صَوْمَ غَدٍ عَنْ اَدَاءِ فَرْضِ شَهْرِ رَمَضَانَ هٰذِهِ السَّنَةِ ِللهِ تَعَالَى
-                </motion.div>
+                </div>
+                <div className={styles.latinText}>
+                  Nawaitu shauma ghadin 'an adaa'i fardhi shahri ramadhaana haadzihis sanati lillaahi ta'aalaa
+                </div>
+                <div className={styles.meaningText}>
+                  "Saya berniat puasa esok hari untuk menunaikan kewajiban di bulan Ramadhan tahun ini karena Allah Ta'ala."
+                </div>
               </Accordion.Content>
             </Accordion.Item>
 
@@ -242,19 +231,82 @@ const Home = () => {
                 <ChevronDown className={styles.accordionChevron} />
               </Accordion.Trigger>
               <Accordion.Content className={styles.accordionContent}>
-                <motion.div 
-                  className={styles.arabicText}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
+                <div className={styles.arabicText}>
                   اَللّٰهُمَّ لَكَ صُمْتُ وَبِكَ اٰمَنْتُ وَعَلَى رِزْقِكَ اَفْطَرْتُ
-                </motion.div>
+                </div>
+                <div className={styles.latinText}>
+                  Allahumma laka sumtu wa bika aamantu wa 'alaa rizqika afthartu
+                </div>
+                <div className={styles.meaningText}>
+                  "Ya Allah, untuk-Mu aku berpuasa, kepada-Mu aku beriman, dan dengan rezeki-Mu aku berbuka."
+                </div>
               </Accordion.Content>
             </Accordion.Item>
           </Accordion.Root>
-        </motion.div>
+        </motion.section>
+
+        <div className={styles.ramadanArabic}>رمضان</div>
+        <div className={styles.ramadanSubtext}>شهر البركة والرحمة</div>
+
+        <footer className={styles.footer}>
+          <p className={styles.footerText}>Sabtu, 15 Maret 2025</p>
+          <div className={styles.footerLine}></div>
+          <p className={styles.footerText}>Ramadhan Tiba</p>
+          <p className={styles.footerTextSmall}>Ya Maulana</p>
+          <p className={styles.footerTextSmall}>Created by Muhammad_Ihsan</p>
+        </footer>
       </main>
+
+      {/* Floating Music Player Toggle Button */}
+      <button 
+        className={styles.musicToggleBtn} 
+        onClick={toggleMusicPlayer}
+      >
+        <Music size={24} />
+      </button>
+
+      {/* Floating Music Player */}
+      <AnimatePresence>
+        {showMusicPlayer && (
+          <motion.div 
+            className={styles.floatingMusicPlayer}
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
+          >
+            <div className={styles.musicPlayerContent}>
+              <div className={styles.songInfo}>
+                <Music size={18} />
+                <span>{currentSong.title}</span>
+              </div>
+              <div className={styles.musicControls}>
+                <button 
+                  onClick={togglePlay} 
+                  className={styles.playButton}
+                >
+                  {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+                </button>
+              </div>
+            </div>
+            <div className={styles.songsList}>
+              {songs.map((song, index) => (
+                <button 
+                  key={index} 
+                  className={`${styles.songItem} ${currentSong.title === song.title ? styles.activeSong : ''}`}
+                  onClick={() => changeSong(song)}
+                >
+                  {song.title}
+                </button>
+              ))}
+            </div>
+            <audio
+              ref={audioRef}
+              src={currentSong.url}
+              onEnded={() => setIsPlaying(false)}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
