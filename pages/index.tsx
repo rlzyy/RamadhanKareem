@@ -4,7 +4,7 @@ import axios from 'axios';
 import { format } from 'date-fns';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Accordion from '@radix-ui/react-accordion';
-import { ChevronDown, Clock, Calendar, Moon, Sun, Play, Pause, Music, Search, Star, MapPin, Check, CheckCircle } from 'lucide-react';
+import { ChevronDown, Clock, Calendar, Moon, Sun, Play, Pause, Music, Search, Star, MapPin } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../styles/Home.module.css';
 
@@ -20,7 +20,6 @@ const Home = () => {
   const [showMusicPlayer, setShowMusicPlayer] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [lailatulQadarDays, setLailatulQadarDays] = useState([21, 23, 25, 27, 29]);
-  const [fastingCalendar, setFastingCalendar] = useState([]);
   const audioRef = useRef(null);
   const searchRef = useRef(null);
 
@@ -28,25 +27,6 @@ const Home = () => {
     setTimeout(() => {
       setIsInitialLoading(false);
     }, 2000);
-  }, []);
-
-  useEffect(() => {
-    // Initialize the fasting calendar
-    const ramadanStart = new Date(2025, 2, 15); // March 15, 2025
-    const calendarDays = [];
-    
-    for (let i = 0; i < 30; i++) {
-      const date = new Date(ramadanStart);
-      date.setDate(ramadanStart.getDate() + i);
-      
-      calendarDays.push({
-        day: i + 1,
-        date: format(date, 'dd MMMM yyyy'),
-        completed: false
-      });
-    }
-    
-    setFastingCalendar(calendarDays);
   }, []);
 
   const songs = [
@@ -92,12 +72,6 @@ const Home = () => {
     setCity(selectedCity);
     setCityInput(selectedCity);
     setSearchOpen(false);
-  };
-
-  const toggleFastingDay = (index) => {
-    const updatedCalendar = [...fastingCalendar];
-    updatedCalendar[index].completed = !updatedCalendar[index].completed;
-    setFastingCalendar(updatedCalendar);
   };
 
   useEffect(() => {
@@ -384,52 +358,7 @@ const Home = () => {
           )}
         </motion.section>
 
-        {/* New Fasting Calendar Checklist */}
-        <motion.section 
-          className={styles.fastingCalendarSection}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-        >
-          <h2 className={styles.sectionTitle}>
-            <Calendar className={styles.sectionIcon} /> Kalender Puasa
-          </h2>
-          
-          <div className={styles.fastingCalendarGrid}>
-            {fastingCalendar.slice(0, 10).map((day, index) => (
-              <motion.div 
-                key={index}
-                className={styles.fastingDay}
-                whileHover={{ scale: 1.05 }}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.05 * index }}
-                onClick={() => toggleFastingDay(index)}
-              >
-                <div className={styles.fastingDayNumber}>{day.day}</div>
-                <div className={styles.fastingDayCheckbox}>
-                  {day.completed ? (
-                    <CheckCircle size={18} className={styles.fastingDayCompleted} />
-                  ) : (
-                    <div className={styles.fastingDayEmpty} />
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className={styles.fastingCalendarMonth}>
-            <motion.button 
-              className={styles.calendarViewAllBtn}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Lihat Semua Hari Ramadhan
-            </motion.button>
-          </div>
-        </motion.section>
-
-        {/* Lailatul Qadar Section */}
+        {/* New Lailatul Qadar Section */}
         <motion.section 
           className={styles.lailatulQadarSection}
           initial={{ opacity: 0, y: 20 }}
