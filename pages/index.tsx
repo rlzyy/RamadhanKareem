@@ -9,6 +9,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../styles/Home.module.css';
 
 const Home = () => {
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  
+  useEffect(() => {
+    setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 2000);
+  }, []);
   const [prayerTimes, setPrayerTimes] = useState(null);
   const [city, setCity] = useState('Jakarta');
   const [daysLeft, setDaysLeft] = useState(15);
@@ -58,7 +65,30 @@ const handleCitySubmit = (e) => {
   }, [city]);
 
   return (
-    <div className={styles.container}>
+    <>
+      <AnimatePresence>
+        {isInitialLoading && (
+          <motion.div 
+            className={styles.loadingScreen}
+            exit={{ opacity: 0 }}
+          >
+            <motion.div 
+              className={styles.loadingText}
+              animate={{ 
+                opacity: [0.5, 1, 0.5],
+                scale: [0.95, 1, 0.95]
+              }}
+              transition={{ 
+                duration: 1.5,
+                repeat: Infinity 
+              }}
+            >
+              Loading...
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <div className={styles.container}>
       <motion.div 
         className={styles.backgroundPattern}
         animate={{ 
@@ -73,15 +103,9 @@ const handleCitySubmit = (e) => {
       />
       
       <main className={styles.main}>
-        <motion.div 
-          className={styles.header}
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className={styles.arabicTitle}>رمضان كريم</h1>
-          <h2 className={styles.title}>Ramadhan Kareem</h2>
-          <p className={styles.subtitle}>Selamat Menunaikan Ibadah Puasa 1446 H</p>
+        <motion.div className={styles.header}>
+          <h2 className={styles.subtitle}>Selamat Menunaikan Ibadah Puasa</h2>
+          <h2 className={styles.subtitle}>1446 H</h2>
         </motion.div>
 
         <motion.div 
@@ -90,16 +114,12 @@ const handleCitySubmit = (e) => {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2 }}
         >
-          <Clock className={styles.icon} />
-          <h3>Hitung Mundur</h3>
-          <motion.div 
-            className={styles.daysLeft}
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            {daysLeft}
-          </motion.div>
-          <p>Hari Tersisa</p>
+          <h3 className={styles.countdownTitle}>🌙 Hitung Mundur</h3>
+          <div className={styles.countdownContent}>
+            <div className={styles.daysLeft}>{daysLeft}</div>
+            <p>Hari Tersisa</p>
+            <small>Ramadhan Mubarak! Semoga Allah memberkati puasa dan doa kalian.</small>
+          </div>
         </motion.div>
 
         <motion.div 
