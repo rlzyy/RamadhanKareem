@@ -151,7 +151,6 @@ const Home = () => {
 
   const toggleMusicPlayer = () => {
     setShowMusicPlayer(!showMusicPlayer);
-    // Don't stop the music when closing the player
   };
 
   const formatDate = () => {
@@ -508,24 +507,13 @@ const Home = () => {
           </footer>
         </main>
 
-        <button 
-          className={styles.musicToggleBtn} 
-          onClick={toggleMusicPlayer}
-          title={showMusicPlayer ? "Hide music player" : "Show music player"}
-          data-playing={isPlaying}
-        >
+        <button className={styles.musicToggleBtn} onClick={toggleMusicPlayer}>
           <Music size={20} />
         </button>
 
         <AnimatePresence>
           {showMusicPlayer && (
-            <motion.div 
-              className={styles.floatingMusicPlayer}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
-              transition={{ duration: 0.2 }}
-            >
+            <div className={styles.floatingMusicPlayer}>
               <div className={styles.musicPlayerContent}>
                 <div className={styles.songInfo}>
                   <Music size={18} />
@@ -553,7 +541,7 @@ const Home = () => {
                 src={currentSong.url}
                 onEnded={() => setIsPlaying(false)}
               />
-            </motion.div>
+            </div>
           )}
         </AnimatePresence>
       </div>
